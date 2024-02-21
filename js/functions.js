@@ -21,5 +21,18 @@ const getInteger = (string) => {
 
 // Функция, увеличивающая строку до заданной длины
 const getRequiredLength = (originalString, minLength, extensionString) => {
+  // for (let i = originalString; i <= minLength; i++) {
+  //   extensionString += return;
+  // }
 
+  // if (originalString <= minLength) {
+  //   return extensionString + originalString;
+  // }
+
+  extensionString.slice()
+
+  let sizeString = (extensionString + originalString).slice(minLength);
+  return sizeString;
+  // let sizeString = minLength - Number(originalString);
+  // return (originalString.length <= minLength, sizeString) ? sizeString = extensionString.repeat(sizeString) + originalString : originalString;
 }
