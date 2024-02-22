@@ -28,3 +28,8 @@ const getRequiredLength = (originalString, minLength, extensionString) => {
 
   // return originalString.padStart(minLength, extensionString);
 };
+
+
+// Функция для проверки длины строки
+
+const getStringLength = (stringChecked, maxLength) => (stringChecked.length <= maxLength);
