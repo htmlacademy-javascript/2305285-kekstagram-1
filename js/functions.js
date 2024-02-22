@@ -1,7 +1,6 @@
 // Функция для проверки, является ли строка палиндромом
 
 const checkPalindrom = (palindrom) => {
-
   let revercePalindrom = palindrom.toLowerCase().split('').reverse().join('');
   return palindrom.toLowerCase().replaceAll(' ', '') === revercePalindrom.replaceAll(' ', '');
 };
@@ -20,19 +19,12 @@ const getInteger = (string) => {
 
 
 // Функция, увеличивающая строку до заданной длины
+
 const getRequiredLength = (originalString, minLength, extensionString) => {
-  // for (let i = originalString; i <= minLength; i++) {
-  //   extensionString += return;
-  // }
+  for (let i = originalString.length; i <= minLength; i++) {
+    let sizeString = Number(minLength - originalString.length);
+    return extensionString.repeat(sizeString).slice(originalString.length - minLength) + originalString;
+  }
 
-  // if (originalString <= minLength) {
-  //   return extensionString + originalString;
-  // }
-
-  extensionString.slice()
-
-  let sizeString = (extensionString + originalString).slice(minLength);
-  return sizeString;
-  // let sizeString = minLength - Number(originalString);
-  // return (originalString.length <= minLength, sizeString) ? sizeString = extensionString.repeat(sizeString) + originalString : originalString;
-}
+  // return originalString.padStart(minLength, extensionString);
+};
