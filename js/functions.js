@@ -9,13 +9,10 @@ const checkPalindrom = (palindrom) => {
 // Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа
 
 const getInteger = (string) => {
-  let newString = string.match(/\d+/g).join('');
+  let interimString = string.match(/\d+/g);
+  let newString = interimString ? interimString.join('') : NaN;
   return newString ? parseInt(newString, 10) : NaN;
 };
-
-// let str = 'Здесь нет цифр!'; // Момент напряжения…
-// let result = str.match(/\d+/); // Может, ложное срабатывание?
-// result = result ? parseInt(result[0], 10) : 'Цифры не найдены';
 
 
 // Функция, увеличивающая строку до заданной длины
@@ -25,7 +22,9 @@ const getRequiredLength = (originalString, minLength, extensionString) => {
     let sizeString = Number(minLength - originalString.length);
     return extensionString.repeat(sizeString).slice(originalString.length - minLength) + originalString;
   }
+  return originalString;
 
+  // Запрещенный вариант с padStart
   // return originalString.padStart(minLength, extensionString);
 };
 
