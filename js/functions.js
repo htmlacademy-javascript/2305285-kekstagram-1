@@ -31,4 +31,4 @@ const getRequiredLength = (originalString, minLength, extensionString) => {
 
 // Функция для проверки длины строки
 
-const getStringLength = (stringChecked, maxLength) => (stringChecked.length <= maxLength);
+const getStringLength = (stringChecked, maxLength) => stringChecked.length <= maxLength;
