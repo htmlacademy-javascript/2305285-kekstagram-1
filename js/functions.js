@@ -11,7 +11,7 @@ const checkPalindrom = (palindrom) => {
 const getInteger = (string) => {
   let interimString = string.match(/\d+/g);
   let newString = interimString ? interimString.join('') : NaN;
-  return newString ? parseInt(newString, 10) : NaN;
+  return parseInt(newString, 10);
 };
 
 
