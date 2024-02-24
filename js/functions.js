@@ -1,16 +1,17 @@
 // Функция для проверки, является ли строка палиндромом
 
 const checkPalindrom = (palindrom) => {
-  let revercePalindrom = palindrom.toLowerCase().split('').reverse().join('');
-  return palindrom.toLowerCase().replaceAll(' ', '') === revercePalindrom.replaceAll(' ', '');
+  const editedPalindrom = palindrom.toLowerCase().replaceAll(' ', '');
+  const reversePalindrom = editedPalindrom.split('').reverse().join('');
+  return editedPalindrom === reversePalindrom;
 };
 
 
 // Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа
 
 const getInteger = (string) => {
-  let interimString = string.match(/\d+/g);
-  let newString = interimString ? interimString.join('') : NaN;
+  const interimString = string.match(/\d+/g);
+  const newString = interimString ? interimString.join('') : NaN;
   return parseInt(newString, 10);
 };
 
@@ -18,11 +19,15 @@ const getInteger = (string) => {
 // Функция, увеличивающая строку до заданной длины
 
 const getRequiredLength = (originalString, minLength, extensionString) => {
-  for (let i = originalString.length; i <= minLength; i++) {
-    let sizeString = Number(minLength - originalString.length);
-    return extensionString.repeat(sizeString).slice(originalString.length - minLength) + originalString;
+  if (originalString.length >= minLength) {
+    return originalString;
   }
-  return originalString;
+  const extensionStringLength = minLength - originalString.length;
+  let newExtensionString = extensionString.slice(0, extensionStringLength % extensionString.length);
+  while (newExtensionString.length < extensionStringLength) {
+    newExtensionString += extensionString;
+  }
+  return newExtensionString + originalString;
 
   // Запрещенный вариант с padStart
   // return originalString.padStart(minLength, extensionString);
@@ -31,4 +36,9 @@ const getRequiredLength = (originalString, minLength, extensionString) => {
 
 // Функция для проверки длины строки
 
-const getStringLength = (stringChecked, maxLength) => stringChecked.length <= maxLength;
+const checkStringLength = (string, maxLength) => string.length <= maxLength;
+
+checkPalindrom('топот');
+getInteger('1 кефир, 0.5 батона');
+getRequiredLength('q', 4, 'we');
+checkStringLength('проверяемая строка', 20);
