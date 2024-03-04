@@ -1,6 +1,3 @@
-
-// url - photos/{{i}}.jpg, где {{i}} — это число от 1 до 25, не должны повторяться
-
 const DESCRIPTIONS = [
   'Кот на пляже',
   'Приключение на час',
@@ -28,14 +25,6 @@ const DESCRIPTIONS = [
   'Иллюминаты в городе',
   'Жизнь в лесу',
 ];
-
-// likes - случайное число от 15 до 200
-
-// comments - массив объектов, кол-во на усмотрение, генерируются случайным образом. В комментарии следующее:
-//   - id — любое число, не должны повторяться
-//   - avatar - img/avatar-{{случайное число от 1 до 6}}.svg
-//   - message - еобходимо взять одно или два случайных предложения из представленных ниже:
-//   - name -  случайны:
 
 const MESSAGES = [
   'Всё отлично!',
@@ -84,6 +73,8 @@ const getRandomPositiveInteger = (min, max) => {
   return Math.floor(result);
 };
 
+const NUMBER_OBJECTS_GENERATED = 25;
+
 const createRandomIdIndex = (min, max) => {
   const previousValues = [];
   return function () {
@@ -104,25 +95,15 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const createComments = () => {
   const randomIdIndex = createRandomIdIndex(1, 999);
+  const randomAvatarIndex = createRandomIdIndex(1, 6);
+  const urlAvatarAddres = String(`img/avatar-${randomAvatarIndex()}.svg`);
   return {
     id: randomIdIndex(),
-    avatar: '',
+    avatar: urlAvatarAddres,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   };
 };
-
-console.log(
-  createComments()
-);
-
-// 'photos/' + randomIdDescription + '.jpg';
-
-
-// const randomUrlDescription = () => {
-//   let randomUrlDescriptionId = createRandomIdIndex(1, 25);
-//   return randomUrlDescriptionId;
-// };
 
 const createIdDescription = () => {
   let lastGeneratedId = 0;
@@ -131,27 +112,23 @@ const createIdDescription = () => {
     return lastGeneratedId;
   };
 };
+
 const idDescription = createIdDescription();
 
 const descriptionPhoto = createIdDescription();
 
+const urlPhotoIndex = createIdDescription();
+
 const createDescriptionPhoto = () => {
   const randomQuantityLikes = createRandomIdIndex(15, 200);
+  const urlPhotoAddres = String(`photos/${urlPhotoIndex()}.jpg`);
   return {
     id: idDescription(),
-    url: '',
+    url: urlPhotoAddres,
     description: DESCRIPTIONS[descriptionPhoto() - 1],
     likes: randomQuantityLikes(),
     comments: createComments(),
   };
 };
 
-console.log(
-  createDescriptionPhoto()
-);
-console.log(
-  createDescriptionPhoto()
-);
-console.log(
-  createDescriptionPhoto()
-);
+const arrayPhotoDescriptions = Array.from({length: NUMBER_OBJECTS_GENERATED}, createDescriptionPhoto);
