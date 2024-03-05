@@ -80,6 +80,11 @@ const CommentCount = {
   MAX: 10,
 };
 
+const MessageCount = {
+  MIN: 1,
+  MAX: 2,
+};
+
 // Функция получения целого числа из переданного диапазона
 
 const getRandomPositiveInteger = (min, max) => {
@@ -102,7 +107,7 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const generateCommentId = createIdGenerator();
 
-const createMessage = () => Array.from({length: getRandomPositiveInteger(CommentCount.MIN, CommentCount.MAX)}, () => getRandomArrayElement(MESSAGES)).join(' ');
+const createMessage = () => Array.from({length: getRandomPositiveInteger(MessageCount.MIN, MessageCount.MAX)}, () => getRandomArrayElement(MESSAGES)).join(' ');
 
 const createComments = () => {
   const randomAvatarIndex = getRandomPositiveInteger(AvatarCount.MIN, AvatarCount.MAX);
