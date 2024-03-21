@@ -1,4 +1,7 @@
 import './data.js';
 import { generatePhotos } from './data.js';
+import { renderMiniatures } from './miniatures.js';
 
-generatePhotos();
+const photos = generatePhotos();
+
+renderMiniatures(photos);
