@@ -1,18 +1,20 @@
-import { generatePhotos } from './data.js';
-
-const pictures = document.querySelector('.pictures');
-const pictureFragment = document.createDocumentFragment();
-
+const containerElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const miniaturePhotos = generatePhotos();
+const renderMiniatures = (photos) => {
+  const fragment = document.createDocumentFragment();
 
-miniaturePhotos.forEach(({url, likes, comments}) => {
-  const pictureElement = pictureTemplate.cloneNode(true);
-  pictureElement.querySelector('.picture__img').src = url;
-  pictureElement.querySelector('.picture__likes').textContent = likes;
-  pictureElement.querySelector('.picture__comments').textContent = comments.length;
-  pictureFragment.appendChild(pictureElement);
-});
+  photos.forEach(({ url, description, likes, comments }) => {
+    const pictureElement = pictureTemplate.cloneNode(true);
+    const imageElement = pictureElement.querySelector('.picture__img');
+    imageElement.src = url;
+    imageElement.alt = description;
+    pictureElement.querySelector('.picture__likes').textContent = likes;
+    pictureElement.querySelector('.picture__comments').textContent = comments.length;
+    fragment.appendChild(pictureElement);
+  });
 
-pictures.appendChild(pictureFragment);
+  containerElement.appendChild(fragment);
+};
+
+export { renderMiniatures };
