@@ -18,4 +18,7 @@ const createIdGenerator = () => {
   };
 };
 
-export { getRandomPositiveInteger, getRandomArrayElement, createIdGenerator };
+// Проверка нажатия клавиши Escape
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomPositiveInteger, getRandomArrayElement, createIdGenerator, isEscapeKey };

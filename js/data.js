@@ -19,7 +19,7 @@ const DESCRIPTIONS = [
   'Вид из иллюминатора',
   'Семеро одного не ждут',
   'Назад в прошлое',
-  'Монстр под кроватью не теперь страшен',
+  'Монстр под кроватью теперь не страшен',
   'Сады Семирамиды',
   'Ужин на одного',
   'Пылающий закат',
@@ -116,4 +116,4 @@ const createPhoto = () => {
 
 const generatePhotos = () => Array.from({length: PHOTO_COUNT}, createPhoto);
 
-export { generatePhotos };
+export { generatePhotos, createComments };
