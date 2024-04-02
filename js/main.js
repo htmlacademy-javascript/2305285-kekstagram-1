@@ -4,6 +4,4 @@ import { renderGallery } from './gallery.js';
 
 const photos = generatePhotos();
 
-// renderMiniatures(photos);
-
 renderGallery(photos);

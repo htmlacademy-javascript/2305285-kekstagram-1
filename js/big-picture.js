@@ -1,6 +1,4 @@
-// import { miniatures } from './main.js';
-// import { renderMiniatures } from './miniatures.js';
-// import { createComments } from './data.js';
+import { createComments, PHOTO_SIZE } from './data.js';
 
 import { isEscapeKey } from './util.js';
 
@@ -25,22 +23,25 @@ const renderBigPicture = ({ url, description, likes, comments }) => {
   bigPictureElement.querySelector('.social__caption').textContent = description;
 };
 
-// comment.forEach(({ avatar, name, message }) => {
-//   const socialCommentsElement = document.querySelector('.social__comments');
-//   const commentBlock = document.createElements('li');
-//   commentBlock.classList.add('social__comment');
-//   const commentImage = document.createElements('img');
-//   commentImage.classList.add('social__picture');
-//   commentImage.src = avatar;
-//   commentImage.alt = name;
-//   commentImage.width = 35;
-//   commentImage.height = 35;
-//   const commentText = document.createElements('p');
-//   commentText.classList.add('social__text');
-//   commentText.textContent = message;
-//   commentBlock.appendChild(commentImage, commentText);
-//   socialCommentsElement.appendChild(commentBlock);
-// });
+const renderBigPictureComments = ({ avatar, name, message }) => {
+  const socialCommentsElement = bigPictureElement.querySelector('.big-picture__social .social__comments');
+  socialCommentsElement.innerHTML = '';
+  const commentBlock = document.createElement('li');
+  commentBlock.classList.add('social__comment');
+  const commentImage = document.createElement('img');
+  commentImage.classList.add('social__picture');
+  commentImage.src = avatar;
+  commentImage.alt = name;
+  commentImage.width = PHOTO_SIZE;
+  commentImage.height = PHOTO_SIZE;
+  const commentText = document.createElement('p');
+  commentText.classList.add('social__text');
+  commentText.textContent = message;
+  commentBlock.appendChild(commentImage);
+  commentBlock.appendChild(commentText);
+  socialCommentsElement.appendChild(commentBlock);
+  return socialCommentsElement;
+};
 
 const openBigPicture = (info) => {
   bigPictureElement.classList.remove('hidden');
@@ -50,6 +51,9 @@ const openBigPicture = (info) => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPicture(info);
+  // renderBigPictureComments(info.comments);
+  // while
+  renderBigPictureComments(createComments());
 };
 
 closeBigPictureElement.addEventListener('click', () => {
@@ -58,61 +62,5 @@ closeBigPictureElement.addEventListener('click', () => {
 
   document.removeEventListener('keydown', onDocumentKeydown);
 });
-
-// const renderBigPicture = (picture) => {
-
-
-//   // picture = miniatures();
-
-//   picture.forEach(({ url, description, likes, comments }) => {
-//     // const imageBigElement = document.querySelector('.big-picture__img').closest('img');
-//     // imageBigElement.src = url;
-
-
-//     document.querySelector('.likes-count').textContent = likes;
-//     document.querySelector('.comments-count').textContent = comments.length;
-//     document.querySelector('.social__caption').textContent = description;
-//   });
-
-//   // comment.forEach(({ avatar, name, message }) => {
-//   //   const socialCommentsElement = document.querySelector('.social__comments');
-//   //   const commentBlock = document.createElements('li');
-//   //   commentBlock.classList.add('social__comment');
-//   //   const commentImage = document.createElements('img');
-//   //   commentImage.classList.add('social__picture');
-//   //   commentImage.src = avatar;
-//   //   commentImage.alt = name;
-//   //   commentImage.width = 35;
-//   //   commentImage.height = 35;
-//   //   const commentText = document.createElements('p');
-//   //   commentText.classList.add('social__text');
-//   //   commentText.textContent = message;
-//   //   commentBlock.appendChild(commentImage, commentText);
-//   //   socialCommentsElement.appendChild(commentBlock);
-//   // });
-
-// };
-
-// const createCommentsElement = createComments();
-
-
-// createCommentsElement.forEach(({ avatar, name, message }) => {
-//   const socialCommentsElement = document.querySelector('.social__comments');
-//   const commentBlock = document.createElements('li');
-//   commentBlock.classList.add('social__comment');
-//   const commentImage = document.createElements('img');
-//   commentImage.classList.add('social__picture');
-//   commentImage.src = avatar;
-//   commentImage.alt = name;
-//   commentImage.width = 35;
-//   commentImage.height = 35;
-//   const commentText = document.createElements('p');
-//   commentText.classList.add('social__text');
-//   commentText.textContent = message;
-//   commentBlock.appendChild(commentImage, commentText);
-//   socialCommentsElement.appendChild(commentBlock);
-//   socialCommentsElement.appendChild(commentBlock);
-// });
-
 
 export { renderBigPicture, openBigPicture };
