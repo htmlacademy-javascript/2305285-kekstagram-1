@@ -23,24 +23,46 @@ const renderBigPicture = ({ url, description, likes, comments }) => {
   bigPictureElement.querySelector('.social__caption').textContent = description;
 };
 
-const renderBigPictureComments = ({ avatar, name, message }) => {
-  const socialCommentsElement = bigPictureElement.querySelector('.big-picture__social .social__comments');
-  socialCommentsElement.innerHTML = '';
-  const commentBlock = document.createElement('li');
-  commentBlock.classList.add('social__comment');
-  const commentImage = document.createElement('img');
-  commentImage.classList.add('social__picture');
-  commentImage.src = avatar;
-  commentImage.alt = name;
-  commentImage.width = PHOTO_SIZE;
-  commentImage.height = PHOTO_SIZE;
-  const commentText = document.createElement('p');
-  commentText.classList.add('social__text');
-  commentText.textContent = message;
-  commentBlock.appendChild(commentImage);
-  commentBlock.appendChild(commentText);
-  socialCommentsElement.appendChild(commentBlock);
-  return socialCommentsElement;
+// const renderBigPictureComments = ({ avatar, name, message }) => {
+//   const socialCommentsElement = bigPictureElement.querySelector('.big-picture__social .social__comments');
+//   socialCommentsElement.innerHTML = '';
+//   const commentBlock = document.createElement('li');
+//   commentBlock.classList.add('social__comment');
+//   const commentImage = document.createElement('img');
+//   commentImage.classList.add('social__picture');
+//   commentImage.src = avatar;
+//   commentImage.alt = name;
+//   commentImage.width = PHOTO_SIZE;
+//   commentImage.height = PHOTO_SIZE;
+//   const commentText = document.createElement('p');
+//   commentText.classList.add('social__text');
+//   commentText.textContent = message;
+//   commentBlock.appendChild(commentImage);
+//   commentBlock.appendChild(commentText);
+//   socialCommentsElement.appendChild(commentBlock);
+//   return socialCommentsElement;
+// };
+
+const renderBigPictureComments = (comments) => {
+  comments.forEach(({ avatar, name, message }) => {
+    const socialCommentsElement = bigPictureElement.querySelector('.big-picture__social .social__comments');
+    socialCommentsElement.innerHTML = '';
+    const commentBlock = document.createElement('li');
+    commentBlock.classList.add('social__comment');
+    const commentImage = document.createElement('img');
+    commentImage.classList.add('social__picture');
+    commentImage.src = avatar;
+    commentImage.alt = name;
+    commentImage.width = PHOTO_SIZE;
+    commentImage.height = PHOTO_SIZE;
+    const commentText = document.createElement('p');
+    commentText.classList.add('social__text');
+    commentText.textContent = message;
+    commentBlock.appendChild(commentImage);
+    commentBlock.appendChild(commentText);
+    socialCommentsElement.appendChild(commentBlock);
+    return socialCommentsElement;
+  });
 };
 
 const openBigPicture = (info) => {
@@ -51,9 +73,11 @@ const openBigPicture = (info) => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPicture(info);
-  // renderBigPictureComments(info.comments);
-  // while
-  renderBigPictureComments(createComments());
+
+  // renderBigPictureComments(createComments());
+
+  renderBigPictureComments(info.comments);
+
 };
 
 closeBigPictureElement.addEventListener('click', () => {
@@ -63,4 +87,4 @@ closeBigPictureElement.addEventListener('click', () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 });
 
-export { renderBigPicture, openBigPicture };
+export { renderBigPicture, openBigPicture, renderBigPictureComments };
