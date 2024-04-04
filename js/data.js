@@ -66,7 +66,6 @@ const NAMES = [
 ];
 
 const PHOTO_COUNT = 25;
-const PHOTO_SIZE = 35;
 
 const AvatarCount = {
   MIN: 1,
@@ -117,4 +116,4 @@ const createPhoto = () => {
 
 const generatePhotos = () => Array.from({length: PHOTO_COUNT}, createPhoto);
 
-export { generatePhotos, createComments, createPhoto, PHOTO_SIZE };
+export { generatePhotos };
