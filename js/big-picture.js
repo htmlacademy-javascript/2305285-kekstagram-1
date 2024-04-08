@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import { isEscapeKey } from './util.js';
 
 const COMMENTS_COIN = 5;
@@ -53,49 +52,73 @@ const openBigPicture = (info) => {
 
   const comments = info.comments;
   let commentsShown = 0;
-
-  // const onCommentsLoader = () => {
-  //   // commentsContainerElement.innerHTML = '';
-  //   renderComments(comments);
-  // };
-
   commentsShown += COMMENTS_COIN;
 
-  if (comments.length <= commentsShown) {
-    commentsShown += COMMENTS_COIN;
+  if (commentsShown >= comments.length) {
+    commentsShown = comments.length;
+    // commentsShown += COMMENTS_COIN;
     renderComments(comments);
     commentsLoaderElement.classList.add('hidden');
-    // commentCountElement.innerHTML = '${commentsShown.length} из <span class="comments-count">${comments.length}</span> комментариев';
+    commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${comments.length}</span> комментариев`;
   } else {
-    comments.length = commentsShown;
+    // comments.length = commentsShown;
+    // commentsShown = comments.length;
+    // renderComments(comments);
     commentsLoaderElement.classList.remove('hidden');
-    renderComments(comments);
-    // commentsLoaderElement.addEventListener('click', onCommentsLoader);
-    // if (commentsLoaderElement.onclick) {
-    //   commentsShown += COMMENTS_COIN;
-    //   commentsLoaderElement.addEventListener('click', () => {
-    //     commentsContainerElement.innerHTML = '';
-    //     renderComments(comments);
-    //   });
+    // commentsLoaderElement.addEventListener('click', () => {
+    //   const fragment = document.createDocumentFragment();
+    //   for (let i = 0; i < commentsShown; i++) {
+    //     const commentsBlock = renderComments(comments);
+    //     fragment.appendChild(commentsBlock);
+    //   }
+    //   commentsContainerElement.innerHTML = '';
+    //   commentsContainerElement.appendChild(fragment);
+    // });
+
+    // const fragment = document.createDocumentFragment();
+    // for (let i = 0; i < commentsShown; i++) {
+    //   const commentsBlock = renderComments(comments);
+    //   fragment.appendChild(commentsBlock);
+    // }
+    // commentsContainerElement.innerHTML = '';
+    // commentsContainerElement.appendChild(fragment);
   }
 
   // const fragment = document.createDocumentFragment();
+  // comments.length = commentsShown;
   // for (let i = 0; i < commentsShown; i++) {
-  // const commentsBlock = renderComments(comments);
-  // fragment.appendChild(commentsBlock);
+  //   const commentsBlock = renderComments(comments);
+  //   fragment.appendChild(commentsBlock);
   // }
-
   // commentsContainerElement.innerHTML = '';
   // commentsContainerElement.appendChild(fragment);
 
+  // comments.length = 5;
 
-  // commentsLoaderElement.addEventListener('click', onCommentsLoader);
-  //   if (commentsLoaderElement.onclick) {
-  commentsShown += COMMENTS_COIN;
+  // commentsShown = comments.length;
   commentsLoaderElement.addEventListener('click', () => {
-    commentsContainerElement.innerHTML = '';
+    commentsShown = comments.length;
     renderComments(comments);
+    // commentsContainerElement.innerHTML = '';
+
+    // const fragment = document.createDocumentFragment();
+    // const commentsBlock = renderComments(comments);
+    // fragment.appendChild(commentsBlock);
+    // commentsContainerElement.innerHTML = '';
+    // commentsContainerElement.appendChild(fragment);
+
+    // const fragment = document.createDocumentFragment();
+    // for (let i = 0; i < commentsShown; i++) {
+    //   const commentsBlock = renderComments(comments);
+    //   fragment.appendChild(commentsBlock);
+    // }
+    // commentsContainerElement.innerHTML = '';
+    // commentsContainerElement.appendChild(fragment);
   });
+
+  // commentsContainerElement.innerHTML = '';
+
+  // commentCountElement.innerHTML = `${commentsShown + COMMENTS_COIN} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
 
 closeBigPictureElement.addEventListener('click', () => {
