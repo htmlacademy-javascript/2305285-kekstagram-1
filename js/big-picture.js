@@ -1,14 +1,17 @@
 import { isEscapeKey } from './util.js';
 
-const COMMENTS_COIN = 5;
+const COMMENTS_NUMBER = 5;
 
 const bodyElement = document.querySelector('body');
 const bigPictureElement = document.querySelector('.big-picture');
 const closeBigPictureElement = document.querySelector('.big-picture__cancel');
 const commentCountElement = document.querySelector('.social__comment-count');
-const commentsLoaderElement = document.querySelector('.big-picture .comments-loader');
+const commentsLoaderElement = document.querySelector('.comments-loader');
 const commentsContainerElement = bigPictureElement.querySelector('.big-picture__social .social__comments');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+
+let currentComments;
+let commentsShown = 0;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -25,11 +28,14 @@ const renderBigPicture = ({ url, description, likes, comments }) => {
   bigPictureElement.querySelector('.social__caption').textContent = description;
 };
 
-const renderComments = (comments) => {
-  commentsContainerElement.innerHTML = '';
+const renderComments = () => {
+  const newCommentsShown = Math.min(currentComments.length, commentsShown + COMMENTS_NUMBER);
+
   const fragment = document.createDocumentFragment();
 
-  comments.forEach(({ avatar, name, message }) => {
+  const pieceCurrentComments = currentComments.slice(commentsShown, newCommentsShown);
+
+  pieceCurrentComments.forEach(({ avatar, name, message }) => {
     const commentElement = commentTemplate.cloneNode(true);
     const commentImage = commentElement.querySelector('.social__picture');
     commentImage.src = avatar;
@@ -38,9 +44,19 @@ const renderComments = (comments) => {
     commentText.textContent = message;
     fragment.appendChild(commentElement);
   });
+  commentsShown = newCommentsShown;
+
+  if (commentsShown >= currentComments.length) {
+    commentsLoaderElement.classList.add('hidden');
+  } else {
+    commentsLoaderElement.classList.remove('hidden');
+  }
 
   commentsContainerElement.appendChild(fragment);
+
+  commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${currentComments.length}</span> комментариев`;
 };
+
 
 const openBigPicture = (info) => {
   bigPictureElement.classList.remove('hidden');
@@ -48,82 +64,21 @@ const openBigPicture = (info) => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPicture(info);
-  // renderComments(info.comments);
 
-  const comments = info.comments;
-  let commentsShown = 0;
-  commentsShown += COMMENTS_COIN;
+  commentsContainerElement.innerHTML = '';
+  currentComments = info.comments;
+  renderComments();
 
-  if (commentsShown >= comments.length) {
-    commentsShown = comments.length;
-    // commentsShown += COMMENTS_COIN;
-    renderComments(comments);
-    commentsLoaderElement.classList.add('hidden');
-    commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${comments.length}</span> комментариев`;
-  } else {
-    // comments.length = commentsShown;
-    // commentsShown = comments.length;
-    // renderComments(comments);
-    commentsLoaderElement.classList.remove('hidden');
-    // commentsLoaderElement.addEventListener('click', () => {
-    //   const fragment = document.createDocumentFragment();
-    //   for (let i = 0; i < commentsShown; i++) {
-    //     const commentsBlock = renderComments(comments);
-    //     fragment.appendChild(commentsBlock);
-    //   }
-    //   commentsContainerElement.innerHTML = '';
-    //   commentsContainerElement.appendChild(fragment);
-    // });
-
-    // const fragment = document.createDocumentFragment();
-    // for (let i = 0; i < commentsShown; i++) {
-    //   const commentsBlock = renderComments(comments);
-    //   fragment.appendChild(commentsBlock);
-    // }
-    // commentsContainerElement.innerHTML = '';
-    // commentsContainerElement.appendChild(fragment);
-  }
-
-  // const fragment = document.createDocumentFragment();
-  // comments.length = commentsShown;
-  // for (let i = 0; i < commentsShown; i++) {
-  //   const commentsBlock = renderComments(comments);
-  //   fragment.appendChild(commentsBlock);
-  // }
-  // commentsContainerElement.innerHTML = '';
-  // commentsContainerElement.appendChild(fragment);
-
-  // comments.length = 5;
-
-  // commentsShown = comments.length;
-  commentsLoaderElement.addEventListener('click', () => {
-    commentsShown = comments.length;
-    renderComments(comments);
-    // commentsContainerElement.innerHTML = '';
-
-    // const fragment = document.createDocumentFragment();
-    // const commentsBlock = renderComments(comments);
-    // fragment.appendChild(commentsBlock);
-    // commentsContainerElement.innerHTML = '';
-    // commentsContainerElement.appendChild(fragment);
-
-    // const fragment = document.createDocumentFragment();
-    // for (let i = 0; i < commentsShown; i++) {
-    //   const commentsBlock = renderComments(comments);
-    //   fragment.appendChild(commentsBlock);
-    // }
-    // commentsContainerElement.innerHTML = '';
-    // commentsContainerElement.appendChild(fragment);
-  });
-
-  // commentsContainerElement.innerHTML = '';
-
-  // commentCountElement.innerHTML = `${commentsShown + COMMENTS_COIN} из <span class="comments-count">${comments.length}</span> комментариев`;
 };
+
+commentsLoaderElement.addEventListener('click', () => {
+  renderComments();
+});
 
 closeBigPictureElement.addEventListener('click', () => {
   bigPictureElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
+  commentsShown = 0;
 
   document.removeEventListener('keydown', onDocumentKeydown);
 });
