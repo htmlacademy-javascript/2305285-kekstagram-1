@@ -57,7 +57,6 @@ const renderComments = () => {
   commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${currentComments.length}</span> комментариев`;
 };
 
-
 const openBigPicture = (info) => {
   bigPictureElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
@@ -68,7 +67,6 @@ const openBigPicture = (info) => {
   commentsContainerElement.innerHTML = '';
   currentComments = info.comments;
   renderComments();
-
 };
 
 commentsLoaderElement.addEventListener('click', () => {
