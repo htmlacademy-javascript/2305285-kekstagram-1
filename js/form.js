@@ -13,11 +13,22 @@ const textDescriptionField = document.querySelector('.text__description');
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successElement = successTemplate.cloneNode(true);
-const successButton = document.querySelector('.success__button');
+const successButton = successElement.querySelector('.success__button');
 
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorElement = errorTemplate.cloneNode(true);
-const errorButton = document.querySelector('.error__button');
+const errorButton = errorElement.querySelector('.error__button');
+
+const clearForm = () => {
+  uploadFileElement.value = '';
+  textHashtagsField.value = '';
+  textDescriptionField.value = '';
+  // imgUploadForm.addEventListener('change', () => {
+  //   uploadFileElement.value = '';
+  //   textHashtagsField.value = '';
+  //   textDescriptionField.value = '';
+  // });
+};
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -48,7 +59,6 @@ textHashtagsField.addEventListener('keydown', (evt) => {
 textDescriptionField.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
-
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -88,13 +98,45 @@ const validateHashtag = (value) => {
     }
   }
 
-  splitHashtag.lenght <= MAX_HASHTAG_LENGTH;
+  // splitHashtag.lenght <= MAX_HASHTAG_LENGTH;
 };
 
 pristine.addValidator(textHashtagsField,
   validateHashtag,
   'Хэштег должен начинаться с #'
 );
+
+const onErrorKeydown = (evt) => {
+  // const errorSection = document.querySelector('.error');
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    errorElement.classList.add('hidden');
+  }
+};
+
+const openErrorMessage = () => {
+  bodyElement.appendChild(errorElement);
+  errorButton.addEventListener('click', () => {
+    errorElement.classList.add('hidden');
+  });
+
+  // const errorSection = document.querySelector('.error-inner');
+  // errorSection.addEventListener('keydown', onErrorKeydown);
+  errorElement.addEventListener('keydown', onErrorKeydown);
+};
+
+const openSuccessMessage = () => {
+  bodyElement.appendChild(successElement);
+  successButton.addEventListener('click', () => {
+    successElement.classList.add('hidden');
+    clearForm();
+    imgUploadElement.classList.add('hidden');
+  });
+
+  // const errorSection = document.querySelector('.error-inner');
+  // errorSection.addEventListener('keydown', onErrorKeydown);
+  errorElement.addEventListener('keydown', onErrorKeydown);
+};
 
 imgUploadForm.addEventListener('submit', (evt) => {
   // evt.preventDefault();
@@ -103,19 +145,11 @@ imgUploadForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (!isValid) {
     evt.preventDefault();
-    bodyElement.appendChild(errorElement);
-    errorButton.addEventListener('click', () => {
-      errorElement.classList.add('hidden');
-      // bodyElement.appendChild(errorElement);
-    });
+    openErrorMessage();
 
   } else {
     evt.preventDefault();
-    bodyElement.appendChild(successElement);
-    successButton.addEventListener('click', () => {
-      successElement.classList.add('hidden');
-      // bodyElement.appendChild(successElement);
-    });
+    openSuccessMessage();
   }
   // this.submit();
   // submitButton.addEventListener('click', () => {
