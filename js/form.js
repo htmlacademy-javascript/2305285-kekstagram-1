@@ -3,6 +3,7 @@ import { isEscapeKey } from './util.js';
 
 const MAX_DESCRIPTION_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 5;
+const HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const imgUploadForm = document.querySelector('#upload-select-image');
 const imgUploadElement = document.querySelector('.img-upload__overlay');
@@ -23,11 +24,8 @@ const clearForm = () => {
   uploadFileElement.value = '';
   textHashtagsField.value = '';
   textDescriptionField.value = '';
-  // imgUploadForm.addEventListener('change', () => {
-  //   uploadFileElement.value = '';
-  //   textHashtagsField.value = '';
-  //   textDescriptionField.value = '';
-  // });
+
+  // imgUploadForm.reset();
 };
 
 const onDocumentKeydown = (evt) => {
@@ -37,20 +35,6 @@ const onDocumentKeydown = (evt) => {
     bodyElement.classList.remove('modal-open');
   }
 };
-
-uploadFileElement.addEventListener('click', () => {
-  imgUploadElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
-
-  document.addEventListener('keydown', onDocumentKeydown);
-});
-
-closeImgEditingForm.addEventListener('click', () => {
-  imgUploadElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-});
 
 textHashtagsField.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
@@ -75,41 +59,29 @@ pristine.addValidator(textDescriptionField,
   'Максимальная длина 140 символов'
 );
 
+const checkLangthHashtag = (value) => value.length <= MAX_HASHTAG_LENGTH;
+
+const checkSimbolsHashtag = (item) => HASHTAG.test(item);
+
+const checkRepeatHashtag = (item) => {
+  const lowerHashtag = item.map((tag) => tag.toLowerCase());
+  return lowerHashtag.length === new Set(lowerHashtag).size;
+};
+
 const validateHashtag = (value) => {
-  // const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-  const currentHashtag = value;
-  const splitHashtag = currentHashtag.trim().split(' ');
-  // let checkHashtag = [];
-
-
-  // ЕЩЕ РАЗ ЧЕКНУТЬ ВОТ ЭТО, ДОПИСАВ В ФУНКЦИЮ ВСЕ ПУНКТЫ
-  // const checkHashtag = (item) => hashtag.test(item);
-  // splitHashtag.every(checkHashtag);
-
-  // splitHashtag.forEach((item) => {
-  //   hashtag.test(item);
-  //   return item;
-  // });
-
-  for (let i = 0; i < splitHashtag.length; i++) {
-    const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-    if (hashtag.test(splitHashtag[i]) === true) {
-      return splitHashtag;
-    }
-  }
-
-  // splitHashtag.lenght <= MAX_HASHTAG_LENGTH;
+  const splitHashtag = value.trim().split(' ');
+  return checkLangthHashtag(splitHashtag) && splitHashtag.every(checkSimbolsHashtag) && checkRepeatHashtag(splitHashtag);
 };
 
 pristine.addValidator(textHashtagsField,
   validateHashtag,
-  'Хэштег должен начинаться с #'
+  'Хэштег введен неверно'
 );
 
 const onErrorKeydown = (evt) => {
   // const errorSection = document.querySelector('.error');
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
+    evt.stopPropagation();
     errorElement.classList.add('hidden');
   }
 };
@@ -119,6 +91,12 @@ const openErrorMessage = () => {
   errorButton.addEventListener('click', () => {
     errorElement.classList.add('hidden');
   });
+
+  // errorElement.addEventListener('keydown', (evt) => {
+  //   if (isEscapeKey(evt)) {
+  //     evt.stopPropagation();
+  //   }
+  // });
 
   // const errorSection = document.querySelector('.error-inner');
   // errorSection.addEventListener('keydown', onErrorKeydown);
@@ -133,27 +111,37 @@ const openSuccessMessage = () => {
     imgUploadElement.classList.add('hidden');
   });
 
-  // const errorSection = document.querySelector('.error-inner');
-  // errorSection.addEventListener('keydown', onErrorKeydown);
-  errorElement.addEventListener('keydown', onErrorKeydown);
+  // successElement.addEventListener('keydown', (evt) => {
+  //   if (isEscapeKey(evt)) {
+  //     evt.stopPropagation();
+  //   }
+  // });
 };
 
+uploadFileElement.addEventListener('change', () => {
+  imgUploadElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  pristine.reset();
+  // clearForm();
+
+  document.addEventListener('keydown', onDocumentKeydown);
+});
+
+closeImgEditingForm.addEventListener('click', () => {
+  imgUploadElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+});
+
 imgUploadForm.addEventListener('submit', (evt) => {
-  // evt.preventDefault();
-  // pristine.validate();
+  evt.preventDefault();
 
   const isValid = pristine.validate();
   if (!isValid) {
-    evt.preventDefault();
     openErrorMessage();
-
   } else {
-    evt.preventDefault();
     openSuccessMessage();
   }
   // this.submit();
-  // submitButton.addEventListener('click', () => {
-  //   // this.submit();
-  //   bodyElement.appendChild(successTemplate);
-  // });
 });
