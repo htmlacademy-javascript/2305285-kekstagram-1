@@ -1,7 +1,7 @@
+import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 import { initComments } from './comments.js';
 
-const bodyElement = document.querySelector('body');
 const bigPictureElement = document.querySelector('.big-picture');
 const closeBigPictureElement = document.querySelector('.big-picture__cancel');
 
