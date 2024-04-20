@@ -12,6 +12,14 @@ const closeImgEditingForm = document.querySelector('#upload-cancel');
 const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
 
+textHashtagsField.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+
+textDescriptionField.addEventListener('keydown', (evt) => {
+  evt.stopPropagation();
+});
+
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--invalid',
@@ -55,34 +63,28 @@ const closeFormModal = () => {
   clearForm();
   imgUploadElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
-  textHashtagsField.addEventListener('keydown', (evt) => {
-    evt.stopPropagation();
-  });
-  textDescriptionField.addEventListener('keydown', (evt) => {
-    evt.stopPropagation();
-  });
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const openFormModal = () => {
   imgUploadElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeFormModal();
   }
-};
+}
 
 uploadFileElement.addEventListener('change', () => {
   openFormModal();
-  document.addEventListener('keydown', onDocumentKeydown);
 });
 
 closeImgEditingForm.addEventListener('click', () => {
   closeFormModal();
-  document.removeEventListener('keydown', onDocumentKeydown);
 });
 
 imgUploadForm.addEventListener('submit', (evt) => {
