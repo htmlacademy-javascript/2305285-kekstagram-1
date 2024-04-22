@@ -1,5 +1,6 @@
 import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale.js';
 
 const MAX_DESCRIPTION_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 5;
@@ -61,6 +62,7 @@ const clearForm = () => {
 
 const closeFormModal = () => {
   clearForm();
+  resetScale();
   imgUploadElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
