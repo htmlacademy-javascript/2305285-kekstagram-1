@@ -95,5 +95,7 @@ imgUploadForm.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (!isValid) {
     evt.preventDefault();
+  } else {
+    const formData = new FormData(evt.target);
   }
 });

@@ -2,13 +2,14 @@ import './data.js';
 import './form.js';
 import './scale.js';
 import './filters.js';
-import { generatePhotos} from './data.js';
 import { renderGallery } from './gallery.js';
 
 const bodyElement = document.querySelector('body');
 
-const photos = generatePhotos();
-
-renderGallery(photos);
+fetch('https://28.javascript.htmlacademy.pro/kekstagram/data')
+  .then((response) => response.json())
+  .then((photos) => {
+    renderGallery(photos);
+  });
 
 export { bodyElement };
