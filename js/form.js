@@ -2,6 +2,8 @@ import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
 import { resetEffects } from './filters.js';
+import { sendData } from './api.js';
+import { openErrorMessage, openSuccessMessage } from './messages.js';
 
 const MAX_DESCRIPTION_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 5;
@@ -91,11 +93,34 @@ closeImgEditingForm.addEventListener('click', () => {
   closeFormModal();
 });
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
+const setUserFormSubmit = () => {
+  imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  } else {
-    const formData = new FormData(evt.target);
-  }
-});
+    const isValid = pristine.validate();
+    if (!isValid) {
+      openErrorMessage();
+    } else {
+      sendData(new FormData(evt.target)).then(closeFormModal).then(openSuccessMessage).catch();
+    }
+  });
+};
+
+setUserFormSubmit();
+
+
+// const formData = new FormData(evt.target);
+//       fetch(
+//         'https://28.javascript.htmlacademy.pro/kekstagram',
+//         {
+//           method: 'POST',
+//           body: formData,
+//         },
+//       ).then(closeFormModal).then((response) => {
+//         if (response.ok) {
+//           closeFormModal();
+//         } else {
+//           openSuccessMessage();
+//         }
+//       }).catch(() => {
+//         openSuccessMessage();
+//       });
