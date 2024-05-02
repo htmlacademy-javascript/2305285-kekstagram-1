@@ -13,12 +13,27 @@ const errorServerTemplate = document.querySelector('#error-server').content.quer
 const errorServerElement = errorServerTemplate.cloneNode(true);
 
 const onErrorKeydown = (evt) => {
-  // const errorSection = document.querySelector('.error');
+  evt.stopPropagation();
   if (isEscapeKey(evt)) {
-    evt.stopPropagation();
+    evt.preventDefault();
     errorElement.classList.add('hidden');
   }
 };
+
+const onSuccessKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    successElement.classList.add('hidden');
+  }
+};
+
+// successElement.addEventListener('keydown', (evt) => {
+//   evt.stopPropagation();
+// });
+
+// errorElement.addEventListener('keydown', (evt) => {
+//   evt.stopPropagation();
+// });
 
 const openErrorMessage = () => {
   bodyElement.appendChild(errorElement);
@@ -26,45 +41,28 @@ const openErrorMessage = () => {
     errorElement.classList.add('hidden');
   });
 
-  // errorElement.addEventListener('keydown', (evt) => {
-  //   if (isEscapeKey(evt)) {
-  //     evt.stopPropagation();
-  //   }
-  // });
-
-  // const errorSection = document.querySelector('.error-inner');
-  // errorSection.addEventListener('keydown', onErrorKeydown);
-  errorElement.addEventListener('keydown', onErrorKeydown);
+  document.addEventListener('keydown', onErrorKeydown);
 };
 
 const openSuccessMessage = () => {
   bodyElement.appendChild(successElement);
   successButton.addEventListener('click', () => {
     successElement.classList.add('hidden');
-
-    successElement.addEventListener('keydown', (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.stopPropagation();
-      }
-    });
   });
 
-  successElement.addEventListener('keydown', onErrorKeydown);
-
-  // successElement.addEventListener('keydown', (evt) => {
-  //   if (isEscapeKey(evt)) {
-  //     evt.stopPropagation();
-  //   }
-  // });
+  document.addEventListener('keydown', onSuccessKeydown);
 };
 
-// openErrorMessage();
-// openSuccessMessage();
+document.addEventListener('click', () => {
+  document.querySelector('.error').style.display = 'none';
+});
 
+document.addEventListener('click', () => {
+  document.querySelector('.success').style.display = 'none';
+});
 
-const setErrorServerMessages = () => {
+const setErrorServerMessage = () => {
   bodyElement.appendChild(errorServerElement);
 };
 
-
-export { openErrorMessage, openSuccessMessage, setErrorServerMessages };
+export { openErrorMessage, openSuccessMessage, setErrorServerMessage };
