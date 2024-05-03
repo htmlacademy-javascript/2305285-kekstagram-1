@@ -109,47 +109,35 @@ closeImgEditingForm.addEventListener('click', () => {
   closeFormModal();
 });
 
+// submitButton.addEventListener()
+
+// const validateForm = () => {
+//   const isValid = pristine.validate();
+//   if (!isValid) {
+//     submitButton.disabled = true;
+//   } else {
+//     submitButton.disabled = false;
+//   }
+// };
+
+// validateForm();
+
 const setUserFormSubmit = () => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (!isValid) {
       // blockSubmitButton();
+      // submitButton.disabled = true;
     } else {
       blockSubmitButton();
-      sendData(new FormData(evt.target)).then(closeFormModal).then(openSuccessMessage).catch().finally(unblockSubmitButton);
+      sendData(new FormData(evt.target))
+        .then(closeFormModal)
+        .then(openSuccessMessage)
+        .catch((err) => err)
+        .finally(unblockSubmitButton);
     }
   });
 };
 
 setUserFormSubmit();
-
-
-// const setUserFormSubmit = () => {
-//   imgUploadForm.addEventListener('submit', (evt) => {
-//     evt.preventDefault();
-//     const isValid = pristine.validate();
-//     if (!isValid) {
-//       openErrorMessage();
-//     } else {
-//       sendData(new FormData(evt.target)).then(closeFormModal).then(openSuccessMessage).catch();
-//     }
-//   });
-// };
-
-// const formData = new FormData(evt.target);
-//       fetch(
-//         'https://28.javascript.htmlacademy.pro/kekstagram',
-//         {
-//           method: 'POST',
-//           body: formData,
-//         },
-//       ).then(closeFormModal).then((response) => {
-//         if (response.ok) {
-//           closeFormModal();
-//         } else {
-//           openSuccessMessage();
-//         }
-//       }).catch(() => {
-//         openSuccessMessage();
-//       });
