@@ -12,18 +12,21 @@ const errorButton = errorElement.querySelector('.error__button');
 const errorServerTemplate = document.querySelector('#error-server').content.querySelector('.error-server');
 const errorServerElement = errorServerTemplate.cloneNode(true);
 
-const onErrorKeydown = (evt) => {
+errorElement.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
+});
+
+const onErrorKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    errorElement.classList.add('hidden');
+    bodyElement.removeChild(errorElement);
   }
 };
 
 const onSuccessKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    successElement.classList.add('hidden');
+    bodyElement.removeChild(successElement);
   }
 };
 
@@ -35,10 +38,17 @@ const onSuccessKeydown = (evt) => {
 //   evt.stopPropagation();
 // });
 
+const removeErrorElement = () => errorElement.remove();
+const removeSuccessElement = () => successElement.remove();
+
 const openErrorMessage = () => {
   bodyElement.appendChild(errorElement);
   errorButton.addEventListener('click', () => {
-    errorElement.classList.add('hidden');
+    removeErrorElement();
+  });
+
+  document.addEventListener('click', () => {
+    removeErrorElement();
   });
 
   document.addEventListener('keydown', onErrorKeydown);
@@ -47,19 +57,15 @@ const openErrorMessage = () => {
 const openSuccessMessage = () => {
   bodyElement.appendChild(successElement);
   successButton.addEventListener('click', () => {
-    successElement.classList.add('hidden');
+    removeSuccessElement();
+  });
+
+  document.addEventListener('click', () => {
+    removeSuccessElement();
   });
 
   document.addEventListener('keydown', onSuccessKeydown);
 };
-
-document.addEventListener('click', () => {
-  document.querySelector('.error').style.display = 'none';
-});
-
-document.addEventListener('click', () => {
-  document.querySelector('.success').style.display = 'none';
-});
 
 const setErrorServerMessage = () => {
   bodyElement.appendChild(errorServerElement);
