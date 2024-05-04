@@ -94,14 +94,10 @@ const openFormModal = () => {
 };
 
 function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt)) {
+  if (isEscapeKey(evt) && !document.querySelector('.error')) {
     evt.preventDefault();
     closeFormModal();
   }
-
-  // if (document.classList.contains('error')) {
-  //   evt.stopPropagation();
-  // }
 }
 
 uploadFileElement.addEventListener('change', () => {
