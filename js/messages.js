@@ -1,65 +1,66 @@
-import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const successElement = successTemplate.cloneNode(true);
-const successButton = successElement.querySelector('.success__button');
 
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-const errorElement = errorTemplate.cloneNode(true);
-const errorButton = errorElement.querySelector('.error__button');
 
-const onErrorKeydown = (evt) => {
-  // const errorSection = document.querySelector('.error');
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-    errorElement.classList.add('hidden');
-  }
-};
+const errorServerTemplate = document.querySelector('#error-server').content.querySelector('.error-server');
 
-const openErrorMessage = () => {
-  bodyElement.appendChild(errorElement);
-  errorButton.addEventListener('click', () => {
-    errorElement.classList.add('hidden');
-  });
+let messageElement;
 
-  // errorElement.addEventListener('keydown', (evt) => {
-  //   if (isEscapeKey(evt)) {
-  //     evt.stopPropagation();
-  //   }
-  // });
-
-  // const errorSection = document.querySelector('.error-inner');
-  // errorSection.addEventListener('keydown', onErrorKeydown);
-  errorElement.addEventListener('keydown', onErrorKeydown);
+const closeMessage = () => {
+  messageElement.remove();
+  messageElement = null;
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onDocumentClick);
 };
 
 const openSuccessMessage = () => {
-  bodyElement.appendChild(successElement);
+  messageElement = successTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+  const successButton = messageElement.querySelector('.success__button');
   successButton.addEventListener('click', () => {
-    successElement.classList.add('hidden');
-
-    // imgUploadElement.classList.add('hidden');
+    closeMessage();
   });
 
-  // successElement.addEventListener('keydown', (evt) => {
-  //   if (isEscapeKey(evt)) {
-  //     evt.stopPropagation();
-  //   }
-  // });
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  document.addEventListener('click', onDocumentClick);
 };
 
-openErrorMessage();
-openSuccessMessage();
+const openErrorMessage = () => {
+  messageElement = errorTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+  const errorButton = messageElement.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    closeMessage();
+  });
 
-// imgUploadForm.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
+  document.addEventListener('keydown', onDocumentKeydown);
 
-//   // const isValid = pristine.validate();
-//   // if (!isValid) {
-//   //   openErrorMessage();
-//   // } else {
-//   //   openSuccessMessage();
-//   // }
-//   // this.submit();
-// });
+  document.addEventListener('click', onDocumentClick);
+};
+
+const openErrorServerMessage = () => {
+  messageElement = errorServerTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+
+  setTimeout(() => {
+    closeMessage();
+  }, 3000);
+};
+
+function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+}
+
+function onDocumentClick (evt) {
+  if (messageElement === evt.target) {
+    closeMessage();
+  }
+}
+
+export { openErrorMessage, openSuccessMessage, openErrorServerMessage };

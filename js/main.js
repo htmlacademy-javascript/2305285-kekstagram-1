@@ -1,14 +1,10 @@
-import './data.js';
 import './form.js';
 import './scale.js';
 import './filters.js';
-import { generatePhotos} from './data.js';
+import { getData } from './api.js';
 import { renderGallery } from './gallery.js';
 
-const bodyElement = document.querySelector('body');
-
-const photos = generatePhotos();
-
-renderGallery(photos);
-
-export { bodyElement };
+getData()
+  .then((photos) => {
+    renderGallery(photos);
+  }).catch((err) => err);

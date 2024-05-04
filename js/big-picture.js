@@ -1,4 +1,3 @@
-import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 import { initComments } from './comments.js';
 
@@ -9,7 +8,7 @@ const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     bigPictureElement.classList.add('hidden');
-    bodyElement.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
   }
 };
 
@@ -22,7 +21,7 @@ const renderBigPicture = ({ url, description, likes, comments }) => {
 
 const openBigPicture = (info) => {
   bigPictureElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPicture(info);
@@ -32,7 +31,7 @@ const openBigPicture = (info) => {
 
 closeBigPictureElement.addEventListener('click', () => {
   bigPictureElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
 });

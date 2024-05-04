@@ -1198,7 +1198,8 @@ main {
  */
 
 .error,
-.success {
+.success,
+.error-server {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -1214,7 +1215,8 @@ main {
 }
 
 .error__inner,
-.success__inner {
+.success__inner,
+.error-server__inner {
   position: relative;
   width: 600px;
   padding: 50px 20px;
@@ -1236,12 +1238,17 @@ main {
   border-radius: 10px;
 }
 
+.error-server__inner {
+  line-height: 50px;
+}
+
 .success__inner {
   padding: 100px 20px;
   padding-bottom: 75px;
 }
 
-.error__title {
+.error__title,
+.error-server__title {
   position: relative;
 
   margin: 0;
@@ -1257,7 +1264,8 @@ main {
   font-size: 32px;
 }
 
-.error__title::before {
+.error__title::before,
+.error-server__title::before {
   content: "";
   position: absolute;
 
