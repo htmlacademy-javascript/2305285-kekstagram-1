@@ -1,74 +1,66 @@
-import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
-const successElement = successTemplate.cloneNode(true);
-const successButton = successElement.querySelector('.success__button');
 
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-const errorElement = errorTemplate.cloneNode(true);
-const errorButton = errorElement.querySelector('.error__button');
 
 const errorServerTemplate = document.querySelector('#error-server').content.querySelector('.error-server');
-const errorServerElement = errorServerTemplate.cloneNode(true);
 
-errorElement.addEventListener('keydown', (evt) => {
-  evt.stopPropagation();
-});
+let messageElement;
 
-const onErrorKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    bodyElement.removeChild(errorElement);
-  }
-};
-
-const onSuccessKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    bodyElement.removeChild(successElement);
-  }
-};
-
-// successElement.addEventListener('keydown', (evt) => {
-//   evt.stopPropagation();
-// });
-
-// errorElement.addEventListener('keydown', (evt) => {
-//   evt.stopPropagation();
-// });
-
-const removeErrorElement = () => errorElement.remove();
-const removeSuccessElement = () => successElement.remove();
-
-const openErrorMessage = () => {
-  bodyElement.appendChild(errorElement);
-  errorButton.addEventListener('click', () => {
-    removeErrorElement();
-  });
-
-  document.addEventListener('click', () => {
-    removeErrorElement();
-  });
-
-  document.addEventListener('keydown', onErrorKeydown);
+const closeMessage = () => {
+  messageElement.remove();
+  messageElement = null;
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onDocumentClick);
 };
 
 const openSuccessMessage = () => {
-  bodyElement.appendChild(successElement);
+  messageElement = successTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+  const successButton = messageElement.querySelector('.success__button');
   successButton.addEventListener('click', () => {
-    removeSuccessElement();
+    closeMessage();
   });
 
-  document.addEventListener('click', () => {
-    removeSuccessElement();
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  document.addEventListener('click', onDocumentClick);
+};
+
+const openErrorMessage = () => {
+  messageElement = errorTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+  const errorButton = messageElement.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    closeMessage();
   });
 
-  document.addEventListener('keydown', onSuccessKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
+
+  document.addEventListener('click', onDocumentClick);
 };
 
-const setErrorServerMessage = () => {
-  bodyElement.appendChild(errorServerElement);
+const openErrorServerMessage = () => {
+  messageElement = errorServerTemplate.cloneNode(true);
+  document.body.appendChild(messageElement);
+
+  setTimeout(() => {
+    closeMessage();
+  }, 3000);
 };
 
-export { openErrorMessage, openSuccessMessage, setErrorServerMessage };
+function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+}
+
+function onDocumentClick (evt) {
+  if (messageElement === evt.target) {
+    closeMessage();
+  }
+}
+
+export { openErrorMessage, openSuccessMessage, openErrorServerMessage };

@@ -1,4 +1,3 @@
-import { bodyElement } from './main.js';
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
 import { resetEffects } from './filters.js';
@@ -84,13 +83,13 @@ const closeFormModal = () => {
   resetScale();
   resetEffects();
   imgUploadElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
 const openFormModal = () => {
   imgUploadElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -99,6 +98,10 @@ function onDocumentKeydown (evt) {
     evt.preventDefault();
     closeFormModal();
   }
+
+  // if (document.classList.contains('error')) {
+  //   evt.stopPropagation();
+  // }
 }
 
 uploadFileElement.addEventListener('change', () => {
@@ -109,31 +112,17 @@ closeImgEditingForm.addEventListener('click', () => {
   closeFormModal();
 });
 
-// submitButton.addEventListener()
-
-// const validateForm = () => {
-//   const isValid = pristine.validate();
-//   if (!isValid) {
-//     submitButton.disabled = true;
-//   } else {
-//     submitButton.disabled = false;
-//   }
-// };
-
-// validateForm();
-
 const setUserFormSubmit = () => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
-    if (!isValid) {
-      // blockSubmitButton();
-      // submitButton.disabled = true;
-    } else {
+    if (isValid) {
       blockSubmitButton();
       sendData(new FormData(evt.target))
-        .then(closeFormModal)
-        .then(openSuccessMessage)
+        .then(() => {
+          closeFormModal();
+          openSuccessMessage();
+        })
         .catch((err) => err)
         .finally(unblockSubmitButton);
     }

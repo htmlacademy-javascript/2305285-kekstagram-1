@@ -1,4 +1,4 @@
-import { openErrorMessage, setErrorServerMessage } from './messages.js';
+import { openErrorMessage, openErrorServerMessage } from './messages.js';
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/kekstagram';
 
@@ -24,7 +24,7 @@ const load = (route, showMessage, method = Method.GET, body = null) =>
       throw new Error(showMessage());
     });
 
-const getData = () => load(Route.GET_DATA, setErrorServerMessage);
+const getData = () => load(Route.GET_DATA, openErrorServerMessage);
 const sendData = (body) => load(Route.SEND_DATA, openErrorMessage, Method.POST, body);
 
 export { getData, sendData };
