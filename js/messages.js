@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
 
+const ALERT_SHOW_TIME = 3000;
+
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -47,7 +49,7 @@ const openErrorServerMessage = () => {
 
   setTimeout(() => {
     closeMessage();
-  }, 3000);
+  }, ALERT_SHOW_TIME);
 };
 
 function onDocumentKeydown (evt) {
