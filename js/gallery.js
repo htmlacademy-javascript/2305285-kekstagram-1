@@ -1,18 +1,22 @@
 import { renderMiniatures, containerElement } from './miniatures.js';
 import { openBigPicture } from './big-picture.js';
 
-const renderGallery = (pictures) => {
-  containerElement.addEventListener('click', (evt) => {
-    const thumbnail = evt.target.closest('[data-thumbnail-id]');
-    if (!thumbnail) {
-      return;
-    }
+let pictures = [];
 
-    const picture = pictures.find((item) => item.id === +thumbnail.dataset.thumbnailId);
-    openBigPicture(picture);
-  });
+const onContainerClick = (evt) => {
+  const thumbnail = evt.target.closest('[data-thumbnail-id]');
+  if (!thumbnail) {
+    return;
+  }
 
-  renderMiniatures(pictures, containerElement);
+  const picture = pictures.find((item) => item.id === +thumbnail.dataset.thumbnailId);
+  openBigPicture(picture);
+};
+
+const renderGallery = (photos) => {
+  pictures = photos;
+  renderMiniatures(photos, containerElement);
+  containerElement.addEventListener('click', onContainerClick);
 };
 
 export { renderGallery };

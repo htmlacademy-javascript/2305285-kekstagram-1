@@ -1,3 +1,5 @@
+const RERENDER_DELAY = 500;
+
 // Функция получения целого числа из переданного диапазона
 
 const getRandomPositiveInteger = (min, max) => {
@@ -23,7 +25,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 // Функция debounce для устранения дребезга
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
 
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
