@@ -3,25 +3,27 @@ import './scale.js';
 import './filters.js';
 import { getData } from './api.js';
 import { renderGallery } from './gallery.js';
-import { showImgFilters, sortPhotosByComments, getDefaultPhotos, sortPhotosByRandom, getRandomPhotos, getDiscussedPhotos } from './sort.js';
+import { showImgFilters, sortPhotosByComments, sortPhotosByRandom, getCurrentFilterPhotos } from './sort.js';
 import { debounce } from './util.js';
+
 const COMMENTS_SIZE = 10;
+
+const filterDefaultButton = document.querySelector('#filter-default');
+const filterRandomButton = document.querySelector('#filter-random');
+const filterDiscussedButton = document.querySelector('#filter-discussed');
 
 getData()
   .then((photos) => {
     renderGallery(photos);
     const debounceRenderGallery = debounce(renderGallery);
     showImgFilters();
-    getDefaultPhotos(() => debounceRenderGallery(photos));
-    getRandomPhotos(() => debounceRenderGallery(photos.slice().sort(sortPhotosByRandom).slice(0, COMMENTS_SIZE)));
-    getDiscussedPhotos(() => debounceRenderGallery(photos.slice().sort(sortPhotosByComments)));
+    getCurrentFilterPhotos(() => debounceRenderGallery(photos), filterDefaultButton);
+    getCurrentFilterPhotos(() => debounceRenderGallery(photos.slice().sort(sortPhotosByRandom).slice(0, COMMENTS_SIZE)), filterRandomButton);
+    getCurrentFilterPhotos(() => debounceRenderGallery(photos.slice().sort(sortPhotosByComments)), filterDiscussedButton);
   }).catch((err) => err);
 
-// getData()
-//   .then((photos) => {
-//     renderGallery(photos);
-//     showImgFilters();
-//   }).catch((err) => err);
+export { filterDefaultButton };
+
 
 // getData()
 //   .then((photos) => {
