@@ -1,28 +1,28 @@
 const containerElement = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const renderThumbnail = ({ url, description, likes, comments, id }) => {
+const getMiniature = ({ url, description, likes, comments, id }) => {
 
-  const thumbnail = pictureTemplate.cloneNode(true);
-  const imageElement = thumbnail.querySelector('.picture__img');
+  const miniatureElement = pictureTemplate.cloneNode(true);
+  const imageElement = miniatureElement.querySelector('.picture__img');
+  miniatureElement.querySelector('.picture__likes').textContent = likes;
+  miniatureElement.querySelector('.picture__comments').textContent = comments.length;
   imageElement.src = url;
   imageElement.alt = description;
-  thumbnail.querySelector('.picture__likes').textContent = likes;
-  thumbnail.querySelector('.picture__comments').textContent = comments.length;
-  thumbnail.dataset.thumbnailId = id;
+  miniatureElement.dataset.thumbnailId = id;
 
-  return thumbnail;
+  return miniatureElement;
 };
 
 const renderMiniatures = (photos, container) => {
   container.querySelectorAll('.picture').forEach((element) => element.remove());
-  const fragment = document.createDocumentFragment();
+  const fragmentElement = document.createDocumentFragment();
   photos.forEach((photo) => {
-    const thumbnail = renderThumbnail(photo);
-    fragment.appendChild(thumbnail);
+    const miniature = getMiniature(photo);
+    fragmentElement.appendChild(miniature);
   });
 
-  container.appendChild(fragment);
+  container.appendChild(fragmentElement);
 };
 
 export { renderMiniatures, containerElement };
