@@ -1,127 +1,138 @@
-const EFFECTS = [
-  {
-    name: 'none',
-    style: 'none',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit: '',
-  },
-  {
-    name: 'chrome',
-    style: 'grayscale',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: '',
-  },
-  {
-    name: 'sepia',
-    style: 'sepia',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: '',
-  },
-  {
-    name: 'marvin',
-    style: 'invert',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit: '%',
-  },
-  {
-    name: 'phobos',
-    style: 'blur',
-    min: 0,
-    max: 3,
-    step: 0.1,
-    unit: 'px',
-  },
-  {
-    name: 'heat',
-    style: 'brightness',
-    min: 1,
-    max: 3,
-    step: 0.1,
-    unit: '',
-  },
-];
+import { renderMiniatures, containerElement } from './miniatures.js';
 
-const DEFAULT_EFFECT = EFFECTS[0];
-let chosenEffect = DEFAULT_EFFECT;
+const COMMENTS_SIZE = 10;
 
-const imgPreview = document.querySelector('.img-upload__preview img');
-const effectsContainer = document.querySelector('.effects');
-const sliderContainer = document.querySelector('.img-upload__effect-level');
-const sliderElement = document.querySelector('.effect-level__slider');
-const effectValue = document.querySelector('.effect-level__value');
+const imgFiltersContainer = document.querySelector('.img-filters');
 
-const isDefault = () => chosenEffect === DEFAULT_EFFECT;
+let currentPhotos = [];
 
-const hideSlider = () => {
-  sliderContainer.classList.add('hidden');
+const showImgFilters = () => {
+  imgFiltersContainer.classList.remove('img-filters--inactive');
 };
 
-const showSlider = () => {
-  sliderContainer.classList.remove('hidden');
+const sortPhotosByComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
+
+const sortPhotosByRandom = () => Math.random() - 0.5;
+
+const getFilteredPhotos = (currentFilter) => {
+  switch (currentFilter) {
+    case 'filter-random':
+      return [...currentPhotos].sort(sortPhotosByRandom).slice(0, COMMENTS_SIZE);
+    case 'filter-discussed':
+      return [...currentPhotos].sort(sortPhotosByComments);
+    default:
+      return [...currentPhotos];
+  }
 };
 
-const updateOptionsSlider = () => {
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: chosenEffect.min,
-      max: chosenEffect.max,
-    },
-    start: chosenEffect.max,
-    step: chosenEffect.step,
+const initFilters = (photos) => {
+  showImgFilters();
+  currentPhotos = photos;
+  imgFiltersContainer.addEventListener('click', (evt) => {
+    if (!evt.target.classList.contains('img-filters__button')) {
+      return;
+    }
+    const clickedButton = evt.target;
+    imgFiltersContainer.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    clickedButton.classList.add('img-filters__button--active');
+    const sortedPhotos = getFilteredPhotos(clickedButton.id);
+    renderMiniatures(sortedPhotos, containerElement);
   });
-
-  if (isDefault()) {
-    hideSlider();
-  } else {
-    showSlider();
-  }
 };
 
-const onEffectsChange = (evt) => {
-  if (!evt.target.classList.contains('effects__radio')) {
-    return;
-  }
-  chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
-  imgPreview.className = `effects__preview--${chosenEffect.name}`;
-  updateOptionsSlider();
-};
+export { initFilters };
 
-const onSliderUpdate = () => {
-  const sliderValue = sliderElement.noUiSlider.get();
-  if (isDefault()) {
-    imgPreview.style.filter = DEFAULT_EFFECT.style;
-  } else {
-    imgPreview.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
-  }
-  effectValue.value = sliderValue;
-};
+// import { filterDefaultButton } from './main.js';
 
-const resetEffects = () => {
-  chosenEffect = DEFAULT_EFFECT;
-  updateOptionsSlider();
-};
+// const imgFiltersContainer = document.querySelector('.img-filters');
+// const allFilterButtons = document.querySelectorAll('.img-filters__button');
+// // const filterDefaultButton = document.querySelector('#filter-default');
+// // const filterRandomButton = document.querySelector('#filter-random');
+// // const filterDiscussedButton = document.querySelector('#filter-discussed');
 
-noUiSlider.create(sliderElement, {
-  range: {
-    min: DEFAULT_EFFECT.min,
-    max: DEFAULT_EFFECT.max,
-  },
-  start: DEFAULT_EFFECT.max,
-  step: DEFAULT_EFFECT.step,
-  connect: 'lower',
-});
+// const setFilterOnClick = () => {
+//   filterDefaultButton.classList.remove('img-filters__button--active');
+//   for (const button of allFilterButtons) {
+//     button.addEventListener('click', () => {
+//       allFilterButtons.forEach((i) => i.classList.remove('img-filters__button--active'));
+//       button.classList.add('img-filters__button--active');
+//     });
+//   }
+// };
 
-hideSlider();
+// const showImgFilters = () => {
+//   imgFiltersContainer.classList.remove('img-filters--inactive');
+// };
 
-effectsContainer.addEventListener('change', onEffectsChange);
-sliderElement.noUiSlider.on('update', onSliderUpdate);
+// const sortPhotosByComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 
-export { resetEffects };
+// const sortPhotosByRandom = () => Math.random() - 0.5;
+
+// const getCurrentFilterPhotos = (cb, button) => {
+//   button.addEventListener('click', () => {
+//     setFilterOnClick();
+//     cb();
+//   });
+// };
+
+// // function takeOffSortElement () {
+// //   document.removeEventListener('click', setFilterOnClick);
+// // }
+
+// // let sortElement;
+
+// // function onDocumentClick (evt) {
+// //   if (sortElement === evt.target) {
+// //     takeOffSortElement();
+// //   }
+// // }
+
+// // const getDefaultPhotos = (cb) => {
+
+// //   filterDefaultButton.addEventListener('click', () => {
+// //     // allFilterButtons.classList.remove('img-filters__button--active');
+// //     // filterDefaultButton.classList.toggle('img-filters__button--active');
+// //     // for (const button of allFilterButtons) {
+// //     //   button.addEventListener('click', function () {
+// //     //     allFilterButtons.forEach((i) => i.classList.remove('img-filters__button--active'));
+// //     //     this.classList.toggle('img-filters__button--active');
+// //     //   });
+// //     // }
+// //     setFilterOnClick();
+// //     cb();
+// //   });
+// // };
+
+// // const getRandomPhotos = (cb) => {
+
+// //   filterRandomButton.addEventListener('click', () => {
+// //     // allFilterButtons.classList.remove('img-filters__button--active');
+// //     // filterRandomButton.classList.toggle('img-filters__button--active');
+// //     // for (const button of allFilterButtons) {
+// //     //   button.addEventListener('click', function () {
+// //     //     allFilterButtons.forEach((i) => i.classList.remove('img-filters__button--active'));
+// //     //     this.classList.toggle('img-filters__button--active');
+// //     //   });
+// //     // }
+// //     setFilterOnClick();
+// //     cb();
+// //   });
+// // };
+
+// // const getDiscussedPhotos = (cb) => {
+
+// //   filterDiscussedButton.addEventListener('click', () => {
+// //     // allFilterButtons.classList.remove('img-filters__button--active');
+// //     // filterDiscussedButton.classList.toggle('img-filters__button--active');
+// //     // for (const button of allFilterButtons) {
+// //     //   button.addEventListener('click', function () {
+// //     //     allFilterButtons.forEach((i) => i.classList.remove('img-filters__button--active'));
+// //     //     this.classList.toggle('img-filters__button--active');
+// //     //   });
+// //     // }
+// //     setFilterOnClick();
+// //     cb();
+// //   });
+// // };
+
+// export { showImgFilters, sortPhotosByComments, sortPhotosByRandom, getCurrentFilterPhotos };

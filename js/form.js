@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
-import { resetEffects } from './filters.js';
+import { resetEffects } from './effects.js';
 import { sendData } from './api.js';
 import { openSuccessMessage } from './messages.js';
 
