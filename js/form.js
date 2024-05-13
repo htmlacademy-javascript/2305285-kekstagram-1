@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
-import { resetEffects } from './filters.js';
+import { resetEffects } from './effects.js';
 import { sendData } from './api.js';
 import { openSuccessMessage } from './messages.js';
 
@@ -19,16 +19,16 @@ const uploadFileElement = document.querySelector('#upload-file');
 const closeImgEditingForm = document.querySelector('#upload-cancel');
 const textHashtagsField = document.querySelector('.text__hashtags');
 const textDescriptionField = document.querySelector('.text__description');
-const submitButton = document.querySelector('#upload-submit');
+const submitButtonElement = document.querySelector('#upload-submit');
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 textHashtagsField.addEventListener('keydown', (evt) => {

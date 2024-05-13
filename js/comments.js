@@ -18,9 +18,9 @@ const renderComments = () => {
   pieceCurrentComments.forEach(({ avatar, name, message }) => {
     const commentElement = commentTemplate.cloneNode(true);
     const commentImage = commentElement.querySelector('.social__picture');
+    const commentText = commentElement.querySelector('.social__text');
     commentImage.src = avatar;
     commentImage.alt = name;
-    const commentText = commentElement.querySelector('.social__text');
     commentText.textContent = message;
     fragment.appendChild(commentElement);
   });

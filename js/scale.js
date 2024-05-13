@@ -5,18 +5,18 @@ const Scale = {
   DEFAULT: 100
 };
 
-const smallButton = document.querySelector('.scale__control--smaller');
-const bigButton = document.querySelector('.scale__control--bigger');
-const scaleValue = document.querySelector('.scale__control--value');
-const imgPreview = document.querySelector('.img-upload__preview img');
+const smallButtonElement = document.querySelector('.scale__control--smaller');
+const bigButtonElement = document.querySelector('.scale__control--bigger');
+const scaleValueElement = document.querySelector('.scale__control--value');
+const imgPreviewElement = document.querySelector('.img-upload__preview img');
 
 const setScale = (value) => {
-  imgPreview.style.transform = `scale(${value / 100})`;
-  scaleValue.value = `${value}%`;
+  imgPreviewElement.style.transform = `scale(${value / 100})`;
+  scaleValueElement.value = `${value}%`;
 };
 
 const onSmallButtonClick = () => {
-  const originalValue = parseInt(scaleValue.value, 10);
+  const originalValue = parseInt(scaleValueElement.value, 10);
   let newValue = originalValue - Scale.STEP;
   if (newValue < Scale.MIN) {
     newValue = Scale.MIN;
@@ -25,7 +25,7 @@ const onSmallButtonClick = () => {
 };
 
 const onBigButtonClick = () => {
-  const originalValue = parseInt(scaleValue.value, 10);
+  const originalValue = parseInt(scaleValueElement.value, 10);
   let newValue = originalValue + Scale.STEP;
   if (newValue > Scale.MAX) {
     newValue = Scale.MAX;
@@ -35,7 +35,7 @@ const onBigButtonClick = () => {
 
 const resetScale = () => setScale(Scale.DEFAULT);
 
-smallButton.addEventListener('click', onSmallButtonClick);
-bigButton.addEventListener('click', onBigButtonClick);
+smallButtonElement.addEventListener('click', onSmallButtonClick);
+bigButtonElement.addEventListener('click', onBigButtonClick);
 
 export { resetScale };
