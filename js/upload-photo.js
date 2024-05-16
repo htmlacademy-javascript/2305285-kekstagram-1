@@ -3,7 +3,7 @@ import { imgPreviewElement } from './effects.js';
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const chooseFileElement = document.querySelector('#upload-file');
-const effectPreviewElements = document.querySelectorAll('.effects__preview');
+const effectPreviewElement = document.querySelectorAll('.effects__preview');
 
 chooseFileElement.addEventListener('change', () => {
   const file = chooseFileElement.files[0];
@@ -13,7 +13,7 @@ chooseFileElement.addEventListener('change', () => {
 
   if (acceptableExtension) {
     imgPreviewElement.src = URL.createObjectURL(file);
-    effectPreviewElements.forEach((photo) => {
+    effectPreviewElement.forEach((photo) => {
       photo.style.backgroundImage = `url(${imgPreviewElement.src})`;
     });
   }

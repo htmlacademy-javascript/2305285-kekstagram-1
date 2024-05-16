@@ -53,19 +53,19 @@ const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
 
 const imgPreviewElement = document.querySelector('.img-upload__preview img');
-const effectsContainer = document.querySelector('.effects');
-const sliderContainer = document.querySelector('.img-upload__effect-level');
+const effectsContainerElement = document.querySelector('.effects');
+const sliderContainerElement = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
-const effectValue = document.querySelector('.effect-level__value');
+const effectValueElement = document.querySelector('.effect-level__value');
 
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const hideSlider = () => {
-  sliderContainer.classList.add('hidden');
+  sliderContainerElement.classList.add('hidden');
 };
 
 const showSlider = () => {
-  sliderContainer.classList.remove('hidden');
+  sliderContainerElement.classList.remove('hidden');
 };
 
 const updateOptionsSlider = () => {
@@ -101,7 +101,7 @@ const onSliderUpdate = () => {
   } else {
     imgPreviewElement.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
   }
-  effectValue.value = sliderValue;
+  effectValueElement.value = sliderValue;
 };
 
 const resetEffects = () => {
@@ -121,7 +121,7 @@ noUiSlider.create(sliderElement, {
 
 hideSlider();
 
-effectsContainer.addEventListener('change', onEffectsChange);
+effectsContainerElement.addEventListener('change', onEffectsChange);
 sliderElement.noUiSlider.on('update', onSliderUpdate);
 
 export { imgPreviewElement, resetEffects };
