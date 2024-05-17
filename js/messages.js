@@ -20,8 +20,8 @@ const closeMessage = () => {
 const openSuccessMessage = () => {
   messageElement = successTemplate.cloneNode(true);
   document.body.appendChild(messageElement);
-  const successButton = messageElement.querySelector('.success__button');
-  successButton.addEventListener('click', () => {
+  const successButtonElement = messageElement.querySelector('.success__button');
+  successButtonElement.addEventListener('click', () => {
     closeMessage();
   });
 
@@ -33,8 +33,8 @@ const openSuccessMessage = () => {
 const openErrorMessage = () => {
   messageElement = errorTemplate.cloneNode(true);
   document.body.appendChild(messageElement);
-  const errorButton = messageElement.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
+  const errorButtonElement = messageElement.querySelector('.error__button');
+  errorButtonElement.addEventListener('click', () => {
     closeMessage();
   });
 

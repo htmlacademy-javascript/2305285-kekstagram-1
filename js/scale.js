@@ -1,3 +1,5 @@
+import { imgPreviewElement } from './effects.js';
+
 const Scale = {
   STEP: 25,
   MIN: 25,
@@ -8,7 +10,6 @@ const Scale = {
 const smallButtonElement = document.querySelector('.scale__control--smaller');
 const bigButtonElement = document.querySelector('.scale__control--bigger');
 const scaleValueElement = document.querySelector('.scale__control--value');
-const imgPreviewElement = document.querySelector('.img-upload__preview img');
 
 const setScale = (value) => {
   imgPreviewElement.style.transform = `scale(${value / 100})`;

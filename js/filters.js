@@ -5,12 +5,12 @@ const COMMENTS_SIZE = 10;
 
 const debouncedRenderMiniatures = debounce(renderMiniatures);
 
-const imgFiltersContainer = document.querySelector('.img-filters');
+const imgFiltersContainerElement = document.querySelector('.img-filters');
 
 let currentPhotos = [];
 
 const showImgFilters = () => {
-  imgFiltersContainer.classList.remove('img-filters--inactive');
+  imgFiltersContainerElement.classList.remove('img-filters--inactive');
 };
 
 const sortPhotosByComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
@@ -31,12 +31,12 @@ const getFilteredPhotos = (currentFilter) => {
 const initFilters = (photos) => {
   showImgFilters();
   currentPhotos = photos;
-  imgFiltersContainer.addEventListener('click', (evt) => {
+  imgFiltersContainerElement.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
     }
     const clickedButton = evt.target;
-    imgFiltersContainer.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    imgFiltersContainerElement.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     clickedButton.classList.add('img-filters__button--active');
     const sortedPhotos = getFilteredPhotos(clickedButton.id);
     debouncedRenderMiniatures(sortedPhotos, containerElement);

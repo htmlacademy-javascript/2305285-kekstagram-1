@@ -13,12 +13,12 @@ const SubmitButtonText = {
   SENDING: 'ПУБЛИКУЮ..'
 };
 
-const imgUploadForm = document.querySelector('#upload-select-image');
+const imgUploadFormElement = document.querySelector('#upload-select-image');
 const imgUploadElement = document.querySelector('.img-upload__overlay');
 const uploadFileElement = document.querySelector('#upload-file');
-const closeImgEditingForm = document.querySelector('#upload-cancel');
-const textHashtagsField = document.querySelector('.text__hashtags');
-const textDescriptionField = document.querySelector('.text__description');
+const closeImgEditingFormElement = document.querySelector('#upload-cancel');
+const textHashtagsFieldElement = document.querySelector('.text__hashtags');
+const textDescriptionFieldElement = document.querySelector('.text__description');
 const submitButtonElement = document.querySelector('#upload-submit');
 
 const blockSubmitButton = () => {
@@ -31,15 +31,15 @@ const unblockSubmitButton = () => {
   submitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
-textHashtagsField.addEventListener('keydown', (evt) => {
+textHashtagsFieldElement.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
 
-textDescriptionField.addEventListener('keydown', (evt) => {
+textDescriptionFieldElement.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
 
-const pristine = new Pristine(imgUploadForm, {
+const pristine = new Pristine(imgUploadFormElement, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--invalid',
   successClass: 'img-upload__field-wrapper--valid',
@@ -49,7 +49,7 @@ const pristine = new Pristine(imgUploadForm, {
 
 const validateDescription = (value) => value.length <= MAX_DESCRIPTION_LENGTH;
 
-pristine.addValidator(textDescriptionField,
+pristine.addValidator(textDescriptionFieldElement,
   validateDescription,
   'Максимальная длина 140 символов'
 );
@@ -68,13 +68,13 @@ const validateHashtag = (value) => {
   return checkLengthHashtag(hashtags) && hashtags.every(checkSymbolsHashtag) && checkRepeatHashtag(hashtags);
 };
 
-pristine.addValidator(textHashtagsField,
+pristine.addValidator(textHashtagsFieldElement,
   validateHashtag,
   'Хэштег введен неверно',
 );
 
 const clearForm = () => {
-  imgUploadForm.reset();
+  imgUploadFormElement.reset();
   pristine.reset();
 };
 
@@ -104,12 +104,12 @@ uploadFileElement.addEventListener('change', () => {
   openFormModal();
 });
 
-closeImgEditingForm.addEventListener('click', () => {
+closeImgEditingFormElement.addEventListener('click', () => {
   closeFormModal();
 });
 
 const setUserFormSubmit = () => {
-  imgUploadForm.addEventListener('submit', (evt) => {
+  imgUploadFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
