@@ -17,11 +17,11 @@ const renderComments = () => {
 
   pieceCurrentComments.forEach(({ avatar, name, message }) => {
     const commentElement = commentTemplate.cloneNode(true);
-    const commentImage = commentElement.querySelector('.social__picture');
-    const commentText = commentElement.querySelector('.social__text');
-    commentImage.src = avatar;
-    commentImage.alt = name;
-    commentText.textContent = message;
+    const commentImageElement = commentElement.querySelector('.social__picture');
+    const commentTextElement = commentElement.querySelector('.social__text');
+    commentImageElement.src = avatar;
+    commentImageElement.alt = name;
+    commentTextElement.textContent = message;
     fragment.appendChild(commentElement);
   });
   commentsShown = newCommentsShown;
